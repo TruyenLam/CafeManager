@@ -11,6 +11,7 @@ namespace QuanLyCafe
     {
         BindingSource foodList = new BindingSource();
         BindingSource CategoryList = new BindingSource();
+        BindingSource TableList = new BindingSource();
         public fAdmin()
         {
             InitializeComponent();
@@ -22,12 +23,23 @@ namespace QuanLyCafe
         {
             dtgvFood.DataSource = foodList;
             dtgvCategory.DataSource = CategoryList;
+            dtgvTable.DataSource = TableList;
             LoadDateTimePickerBill();
+
             LoadListBillByDay(dtpkFromDate.Value, dtpkToDate.Value);
+
             LoadListFood();
+
+            LoadListTable();
+
             LoadListCategory();
+
             AddFoodBinding();
+
             AddCategoryBinding();
+
+            AddTableBinding();
+
             LoadCategoryIntoCombobox(cbFoodCategory);
         }
         void AddFoodBinding()
@@ -42,7 +54,13 @@ namespace QuanLyCafe
             txbCategoryID.DataBindings.Add(new Binding("Text", dtgvCategory.DataSource, "id"));
             txbCategoryName.DataBindings.Add(new Binding("Text", dtgvCategory.DataSource,"name"));
         }
-
+        void AddTableBinding()
+        {
+            txbTableID.DataBindings.Add(new Binding("Text", dtgvTable.DataSource,"ID"));
+            txbTableName.DataBindings.Add(new Binding("Text",dtgvTable.DataSource,"name"));
+            cbTableStatus.SelectedIndex = 0;
+            
+        }
         void LoadDateTimePickerBill()
         {
             DateTime today = DateTime.Now;
@@ -57,6 +75,10 @@ namespace QuanLyCafe
         {
             foodList.DataSource = FoodDAO.Instance.GetListFood();
         }
+        void LoadListTable()
+        {
+            TableList.DataSource = TableDAO.Instance.LoadTableList(); ;
+        }
         void LoadListCategory()
         {
             CategoryList.DataSource = CategoryDAO.Instance.GetListCategory();
@@ -66,6 +88,7 @@ namespace QuanLyCafe
             cb.DataSource = CategoryDAO.Instance.GetListCategory();
             cb.DisplayMember = "name";
         }
+       
         #endregion
 
         #region Event
@@ -100,6 +123,10 @@ namespace QuanLyCafe
                 cbFoodCategory.SelectedIndex = index;
             }
 
+        }
+        private void txbTableID_TextChanged(object sender, EventArgs e)
+        {
+           
         }
         private void btnAddFood_Click(object sender, EventArgs e)
         {
@@ -251,8 +278,14 @@ namespace QuanLyCafe
                 }
             }
         }
+        private void btnTableShow_Click(object sender, EventArgs e)
+        {
+            LoadListTable();
+        }
+
+
         #endregion
 
-
+        
     }
 }

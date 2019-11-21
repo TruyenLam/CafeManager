@@ -81,6 +81,8 @@
             this.btnAddCategory = new System.Windows.Forms.Button();
             this.panel18 = new System.Windows.Forms.Panel();
             this.dtgvCategory = new System.Windows.Forms.DataGridView();
+            this.idCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NameCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbTable = new System.Windows.Forms.TabPage();
             this.panel13 = new System.Windows.Forms.Panel();
             this.panel11 = new System.Windows.Forms.Panel();
@@ -118,8 +120,6 @@
             this.btnAccountAdd = new System.Windows.Forms.Button();
             this.panel29 = new System.Windows.Forms.Panel();
             this.dtgvAccount = new System.Windows.Forms.DataGridView();
-            this.idCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NameCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tcAdmin.SuspendLayout();
             this.tbBill.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -676,6 +676,22 @@
             this.dtgvCategory.Size = new System.Drawing.Size(441, 330);
             this.dtgvCategory.TabIndex = 0;
             // 
+            // idCategory
+            // 
+            this.idCategory.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.idCategory.DataPropertyName = "id";
+            this.idCategory.HeaderText = "ID";
+            this.idCategory.Name = "idCategory";
+            this.idCategory.ReadOnly = true;
+            this.idCategory.Width = 50;
+            // 
+            // NameCategory
+            // 
+            this.NameCategory.DataPropertyName = "name";
+            this.NameCategory.HeaderText = "Tên Món";
+            this.NameCategory.Name = "NameCategory";
+            this.NameCategory.ReadOnly = true;
+            // 
             // tbTable
             // 
             this.tbTable.Controls.Add(this.panel13);
@@ -737,6 +753,9 @@
             // cbTableStatus
             // 
             this.cbTableStatus.FormattingEnabled = true;
+            this.cbTableStatus.Items.AddRange(new object[] {
+            "Trống",
+            "Có người"});
             this.cbTableStatus.Location = new System.Drawing.Point(90, 3);
             this.cbTableStatus.Name = "cbTableStatus";
             this.cbTableStatus.Size = new System.Drawing.Size(170, 21);
@@ -768,6 +787,7 @@
             this.txbTableID.ReadOnly = true;
             this.txbTableID.Size = new System.Drawing.Size(179, 20);
             this.txbTableID.TabIndex = 1;
+            this.txbTableID.TextChanged += new System.EventHandler(this.txbTableID_TextChanged);
             // 
             // label12
             // 
@@ -798,6 +818,7 @@
             this.btnTableShow.TabIndex = 3;
             this.btnTableShow.Text = "Xem";
             this.btnTableShow.UseVisualStyleBackColor = true;
+            this.btnTableShow.Click += new System.EventHandler(this.btnTableShow_Click);
             // 
             // btnTableEdit
             // 
@@ -1018,22 +1039,6 @@
             this.dtgvAccount.Size = new System.Drawing.Size(441, 330);
             this.dtgvAccount.TabIndex = 0;
             // 
-            // idCategory
-            // 
-            this.idCategory.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.idCategory.DataPropertyName = "id";
-            this.idCategory.HeaderText = "ID";
-            this.idCategory.Name = "idCategory";
-            this.idCategory.ReadOnly = true;
-            this.idCategory.Width = 50;
-            // 
-            // NameCategory
-            // 
-            this.NameCategory.DataPropertyName = "name";
-            this.NameCategory.HeaderText = "Tên Món";
-            this.NameCategory.Name = "NameCategory";
-            this.NameCategory.ReadOnly = true;
-            // 
             // fAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1158,7 +1163,6 @@
         private System.Windows.Forms.TextBox txbTableName;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel panel20;
-        private System.Windows.Forms.ComboBox cbTableStatus;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Panel panel21;
         private System.Windows.Forms.TextBox txbTableID;
@@ -1194,5 +1198,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn idCategory;
         private System.Windows.Forms.DataGridViewTextBoxColumn NameCategory;
+        private System.Windows.Forms.ComboBox cbTableStatus;
     }
 }
