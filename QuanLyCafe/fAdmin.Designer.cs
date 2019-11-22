@@ -40,8 +40,7 @@
             this.dtgvBill = new System.Windows.Forms.DataGridView();
             this.tbFood = new System.Windows.Forms.TabPage();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.txbSearchFoodName = new System.Windows.Forms.TextBox();
+            this.SearchFood = new System.Windows.Forms.Button();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel10 = new System.Windows.Forms.Panel();
             this.nmFoodPrice = new System.Windows.Forms.NumericUpDown();
@@ -101,6 +100,9 @@
             this.btnTableAdd = new System.Windows.Forms.Button();
             this.panel23 = new System.Windows.Forms.Panel();
             this.dtgvTable = new System.Windows.Forms.DataGridView();
+            this.idtable = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nameTable = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.statusTable = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbAccount = new System.Windows.Forms.TabPage();
             this.panel19 = new System.Windows.Forms.Panel();
             this.btnResetPassword = new System.Windows.Forms.Button();
@@ -120,6 +122,9 @@
             this.btnAccountAdd = new System.Windows.Forms.Button();
             this.panel29 = new System.Windows.Forms.Panel();
             this.dtgvAccount = new System.Windows.Forms.DataGridView();
+            this.chkCategory = new System.Windows.Forms.CheckBox();
+            this.chkNameFood = new System.Windows.Forms.CheckBox();
+            this.chkFoodPrice = new System.Windows.Forms.CheckBox();
             this.tcAdmin.SuspendLayout();
             this.tbBill.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -274,28 +279,25 @@
             // 
             // panel6
             // 
-            this.panel6.Controls.Add(this.button1);
-            this.panel6.Controls.Add(this.txbSearchFoodName);
+            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel6.Controls.Add(this.chkFoodPrice);
+            this.panel6.Controls.Add(this.chkNameFood);
+            this.panel6.Controls.Add(this.chkCategory);
+            this.panel6.Controls.Add(this.SearchFood);
             this.panel6.Location = new System.Drawing.Point(459, 6);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(272, 51);
             this.panel6.TabIndex = 3;
             // 
-            // button1
+            // SearchFood
             // 
-            this.button1.Location = new System.Drawing.Point(194, 4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 45);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Tìm Kiếm";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // txbSearchFoodName
-            // 
-            this.txbSearchFoodName.Location = new System.Drawing.Point(3, 17);
-            this.txbSearchFoodName.Name = "txbSearchFoodName";
-            this.txbSearchFoodName.Size = new System.Drawing.Size(179, 20);
-            this.txbSearchFoodName.TabIndex = 0;
+            this.SearchFood.Location = new System.Drawing.Point(194, 4);
+            this.SearchFood.Name = "SearchFood";
+            this.SearchFood.Size = new System.Drawing.Size(75, 45);
+            this.SearchFood.TabIndex = 4;
+            this.SearchFood.Text = "Tìm Kiếm";
+            this.SearchFood.UseVisualStyleBackColor = true;
+            this.SearchFood.Click += new System.EventHandler(this.SearchFood_Click);
             // 
             // panel5
             // 
@@ -502,6 +504,7 @@
             this.name.FillWeight = 284.264F;
             this.name.HeaderText = "Tên món";
             this.name.Name = "name";
+            this.name.ReadOnly = true;
             // 
             // price
             // 
@@ -510,6 +513,7 @@
             this.price.FillWeight = 61.50159F;
             this.price.HeaderText = "Giá Bán";
             this.price.Name = "price";
+            this.price.ReadOnly = true;
             // 
             // CategoryID
             // 
@@ -518,6 +522,7 @@
             this.CategoryID.FillWeight = 44.51588F;
             this.CategoryID.HeaderText = "CategoryID";
             this.CategoryID.Name = "CategoryID";
+            this.CategoryID.ReadOnly = true;
             this.CategoryID.Width = 5;
             // 
             // id
@@ -527,6 +532,7 @@
             this.id.FillWeight = 9.718567F;
             this.id.HeaderText = "ID";
             this.id.Name = "id";
+            this.id.ReadOnly = true;
             this.id.Width = 5;
             // 
             // tbFoodCategory
@@ -643,6 +649,7 @@
             this.btnDeleteCategory.TabIndex = 1;
             this.btnDeleteCategory.Text = "Xóa";
             this.btnDeleteCategory.UseVisualStyleBackColor = true;
+            this.btnDeleteCategory.Click += new System.EventHandler(this.btnDeleteCategory_Click);
             // 
             // btnAddCategory
             // 
@@ -828,6 +835,7 @@
             this.btnTableEdit.TabIndex = 2;
             this.btnTableEdit.Text = "Sữa";
             this.btnTableEdit.UseVisualStyleBackColor = true;
+            this.btnTableEdit.Click += new System.EventHandler(this.btnTableEdit_Click);
             // 
             // btnTableDelete
             // 
@@ -846,6 +854,7 @@
             this.btnTableAdd.TabIndex = 0;
             this.btnTableAdd.Text = "Thêm";
             this.btnTableAdd.UseVisualStyleBackColor = true;
+            this.btnTableAdd.Click += new System.EventHandler(this.btnTableAdd_Click);
             // 
             // panel23
             // 
@@ -857,11 +866,47 @@
             // 
             // dtgvTable
             // 
+            this.dtgvTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dtgvTable.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dtgvTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgvTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.idtable,
+            this.nameTable,
+            this.statusTable});
             this.dtgvTable.Location = new System.Drawing.Point(3, 3);
             this.dtgvTable.Name = "dtgvTable";
+            this.dtgvTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dtgvTable.Size = new System.Drawing.Size(441, 330);
             this.dtgvTable.TabIndex = 0;
+            // 
+            // idtable
+            // 
+            this.idtable.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.idtable.DataPropertyName = "id";
+            this.idtable.HeaderText = "ID";
+            this.idtable.MinimumWidth = 10;
+            this.idtable.Name = "idtable";
+            this.idtable.ReadOnly = true;
+            this.idtable.Width = 10;
+            // 
+            // nameTable
+            // 
+            this.nameTable.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.nameTable.DataPropertyName = "name";
+            this.nameTable.FillWeight = 194.6524F;
+            this.nameTable.HeaderText = "Tên Bàn";
+            this.nameTable.Name = "nameTable";
+            this.nameTable.ReadOnly = true;
+            this.nameTable.Width = 200;
+            // 
+            // statusTable
+            // 
+            this.statusTable.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.statusTable.DataPropertyName = "status";
+            this.statusTable.FillWeight = 5.347595F;
+            this.statusTable.HeaderText = "Tình Trạng";
+            this.statusTable.Name = "statusTable";
+            this.statusTable.ReadOnly = true;
             // 
             // tbAccount
             // 
@@ -1039,6 +1084,36 @@
             this.dtgvAccount.Size = new System.Drawing.Size(441, 330);
             this.dtgvAccount.TabIndex = 0;
             // 
+            // chkCategory
+            // 
+            this.chkCategory.AutoSize = true;
+            this.chkCategory.Location = new System.Drawing.Point(3, 29);
+            this.chkCategory.Name = "chkCategory";
+            this.chkCategory.Size = new System.Drawing.Size(76, 17);
+            this.chkCategory.TabIndex = 6;
+            this.chkCategory.Text = "Danh Mục";
+            this.chkCategory.UseVisualStyleBackColor = true;
+            // 
+            // chkNameFood
+            // 
+            this.chkNameFood.AutoSize = true;
+            this.chkNameFood.Location = new System.Drawing.Point(5, 7);
+            this.chkNameFood.Name = "chkNameFood";
+            this.chkNameFood.Size = new System.Drawing.Size(69, 17);
+            this.chkNameFood.TabIndex = 7;
+            this.chkNameFood.Text = "Tên Món";
+            this.chkNameFood.UseVisualStyleBackColor = true;
+            // 
+            // chkFoodPrice
+            // 
+            this.chkFoodPrice.AutoSize = true;
+            this.chkFoodPrice.Location = new System.Drawing.Point(96, 7);
+            this.chkFoodPrice.Name = "chkFoodPrice";
+            this.chkFoodPrice.Size = new System.Drawing.Size(64, 17);
+            this.chkFoodPrice.TabIndex = 8;
+            this.chkFoodPrice.Text = "Giá Bán";
+            this.chkFoodPrice.UseVisualStyleBackColor = true;
+            // 
             // fAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1130,8 +1205,7 @@
         private System.Windows.Forms.DataGridView dtgvFood;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox txbSearchFoodName;
+        private System.Windows.Forms.Button SearchFood;
         private System.Windows.Forms.Panel panel10;
         private System.Windows.Forms.NumericUpDown nmFoodPrice;
         private System.Windows.Forms.Label label6;
@@ -1192,12 +1266,18 @@
         private System.Windows.Forms.Button btnAccountAdd;
         private System.Windows.Forms.Panel panel29;
         private System.Windows.Forms.DataGridView dtgvAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idCategory;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NameCategory;
+        private System.Windows.Forms.ComboBox cbTableStatus;
         private System.Windows.Forms.DataGridViewTextBoxColumn name;
         private System.Windows.Forms.DataGridViewTextBoxColumn price;
         private System.Windows.Forms.DataGridViewTextBoxColumn CategoryID;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idCategory;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NameCategory;
-        private System.Windows.Forms.ComboBox cbTableStatus;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idtable;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameTable;
+        private System.Windows.Forms.DataGridViewTextBoxColumn statusTable;
+        private System.Windows.Forms.CheckBox chkNameFood;
+        private System.Windows.Forms.CheckBox chkCategory;
+        private System.Windows.Forms.CheckBox chkFoodPrice;
     }
 }

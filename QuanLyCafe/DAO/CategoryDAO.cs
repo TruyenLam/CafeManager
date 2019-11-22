@@ -56,6 +56,12 @@ namespace QuanLyCafe.DAO
             int result = DataProvider.Instance.ExecuteNonQuery(query);
             return result > 0;
         }
+        public bool DeleteCategory(int id)
+        {
+            string query= string.Format("DELETE dbo.TableFood WHERE id ={0}",id);
+            int result = DataProvider.Instance.ExecuteNonQuery(query);
+            return result > 0;
+        }
 
     }
 }

@@ -31,6 +31,14 @@ namespace QuanLyCafe.DAO
             }
             return listFood;
         }
+        public bool GetFoodByCategoryIDandCategory(string name,int categoryID)
+        {
+            string query = string.Format("SELECT COUNT(*) FROM dbo.Food WHERE name =N'{0}' AND idCategory={1}", name,categoryID);
+            int result = (int)DataProvider.Instance.ExecuteScalar(query);
+            
+            return result>0;
+        }
+
         public Food GetFoodByID(int id)
         {
             string query = " SELECT * FROM dbo.Food WHERE ID= " + id;
@@ -71,6 +79,22 @@ namespace QuanLyCafe.DAO
             int result = DataProvider.Instance.ExecuteNonQuery(query);
 
             return result > 0;
+        }
+        public List<Food> SearchFoodByName(string name)
+        {
+            List<Food> list = new List<Food>();
+
+            string query = string.Format("SELECT * FROM dbo.Food WHERE dbo.fuConvertToUnsign1(name) LIKE N'%' + dbo.fuConvertToUnsign1(N'{0}') + '%'", name);
+
+            DataTable data = DataProvider.Instance.ExecuteQuery(query);
+
+            foreach (DataRow item in data.Rows)
+            {
+                Food food = new Food(item);
+                list.Add(food);
+            }
+
+            return list;
         }
     }
 }

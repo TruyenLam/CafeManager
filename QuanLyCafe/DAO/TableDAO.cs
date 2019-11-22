@@ -40,5 +40,31 @@ namespace QuanLyCafe.DAO
         {
             DataProvider.Instance.ExecuteQuery("USP_CombineTable @idTable1 , @idTable2", new object[] { id1, id2 });
         }
+        public Table GetTableByID(int id)
+        {
+            string query = " SELECT * FROM dbo.TableFood WHERE id=" + id;
+
+            DataTable data = DataProvider.Instance.ExecuteQuery(query);
+            Table listTable = new Table(data.Rows[0]);        
+           
+            return listTable;
+        }
+        public bool InsertTable(string name,string status)
+        {
+            string query = string.Format("INSERT dbo.TableFood(name,status)VALUES(N'{0}',N'{1}')", name, status);
+            int result = DataProvider.Instance.ExecuteNonQuery(query);
+            return result > 0;
+        }
+        public bool UpdateTable(int id, string name, string status)
+        {
+            string query=string.Format("UPDATE dbo.TableFood SET name =N'{0}',status=N'{1}' WHERE id ={2}",name, status,id);
+            int result= DataProvider.Instance.ExecuteNonQuery(query);
+            return result > 0;
+        }
+        public bool DeleteTable(int id, string name, string status)
+        {
+            int result=0;
+            return result > 0;
+        }
     }
 }
