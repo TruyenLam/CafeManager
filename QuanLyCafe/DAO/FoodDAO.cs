@@ -31,7 +31,19 @@ namespace QuanLyCafe.DAO
             }
             return listFood;
         }
-        public bool GetFoodByCategoryIDandCategory(string name,int categoryID)
+        public List<Food> GetFoodByNameAndCategoryID(string name, int categoryID)
+        {
+            string query = string.Format("SELECT * FROM dbo.Food WHERE name =N'{0}' AND idCategory={1}", name, categoryID);
+            List<Food> listFood = new List<Food>();
+            DataTable data = DataProvider.Instance.ExecuteQuery(query);
+            foreach (DataRow item in data.Rows)
+            {
+                Food food = new Food(item);
+                listFood.Add(food);
+            }
+            return listFood;
+        }
+        public bool CheckFoodByNameandCategory(string name,int categoryID)
         {
             string query = string.Format("SELECT COUNT(*) FROM dbo.Food WHERE name =N'{0}' AND idCategory={1}", name,categoryID);
             int result = (int)DataProvider.Instance.ExecuteScalar(query);
@@ -47,6 +59,34 @@ namespace QuanLyCafe.DAO
             Food listFood = new Food(data.Rows[0]);
             return listFood;
         }
+
+        public List<Food> GetFoodPriceLess(float price)
+        {
+            string query = " SELECT * FROM dbo.Food WHERE price<= " + price;
+
+            DataTable data = DataProvider.Instance.ExecuteQuery(query);
+            List<Food> listFood = new List<Food>();
+            foreach (DataRow item in data.Rows)
+            {
+                Food food = new Food(item);
+                listFood.Add(food);
+            }
+            return listFood;
+        }
+        public List<Food> GetFoodPriceBiger(float price)
+        {
+            string query = " SELECT * FROM dbo.Food WHERE price >= " + price;
+
+            DataTable data = DataProvider.Instance.ExecuteQuery(query);
+            List<Food> listFood = new List<Food>();
+            foreach (DataRow item in data.Rows)
+            {
+                Food food = new Food(item);
+                listFood.Add(food);
+            }
+            return listFood;
+        }
+
         public List<Food> GetListFood()
         {
             string query = "SELECT * FROM dbo.Food";

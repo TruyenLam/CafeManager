@@ -40,6 +40,10 @@
             this.dtgvBill = new System.Windows.Forms.DataGridView();
             this.tbFood = new System.Windows.Forms.TabPage();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.chkFoodPriceBiger = new System.Windows.Forms.CheckBox();
+            this.chkFoodPriceLess = new System.Windows.Forms.CheckBox();
+            this.chkNameFood = new System.Windows.Forms.CheckBox();
+            this.chkCategory = new System.Windows.Forms.CheckBox();
             this.SearchFood = new System.Windows.Forms.Button();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel10 = new System.Windows.Forms.Panel();
@@ -122,9 +126,6 @@
             this.btnAccountAdd = new System.Windows.Forms.Button();
             this.panel29 = new System.Windows.Forms.Panel();
             this.dtgvAccount = new System.Windows.Forms.DataGridView();
-            this.chkCategory = new System.Windows.Forms.CheckBox();
-            this.chkNameFood = new System.Windows.Forms.CheckBox();
-            this.chkFoodPrice = new System.Windows.Forms.CheckBox();
             this.tcAdmin.SuspendLayout();
             this.tbBill.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -280,7 +281,8 @@
             // panel6
             // 
             this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel6.Controls.Add(this.chkFoodPrice);
+            this.panel6.Controls.Add(this.chkFoodPriceBiger);
+            this.panel6.Controls.Add(this.chkFoodPriceLess);
             this.panel6.Controls.Add(this.chkNameFood);
             this.panel6.Controls.Add(this.chkCategory);
             this.panel6.Controls.Add(this.SearchFood);
@@ -288,6 +290,46 @@
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(272, 51);
             this.panel6.TabIndex = 3;
+            // 
+            // chkFoodPriceBiger
+            // 
+            this.chkFoodPriceBiger.AutoSize = true;
+            this.chkFoodPriceBiger.Location = new System.Drawing.Point(96, 29);
+            this.chkFoodPriceBiger.Name = "chkFoodPriceBiger";
+            this.chkFoodPriceBiger.Size = new System.Drawing.Size(89, 17);
+            this.chkFoodPriceBiger.TabIndex = 9;
+            this.chkFoodPriceBiger.Text = "Giá > giá bán";
+            this.chkFoodPriceBiger.UseVisualStyleBackColor = true;
+            // 
+            // chkFoodPriceLess
+            // 
+            this.chkFoodPriceLess.AutoSize = true;
+            this.chkFoodPriceLess.Location = new System.Drawing.Point(96, 7);
+            this.chkFoodPriceLess.Name = "chkFoodPriceLess";
+            this.chkFoodPriceLess.Size = new System.Drawing.Size(89, 17);
+            this.chkFoodPriceLess.TabIndex = 8;
+            this.chkFoodPriceLess.Text = "Giá < giá bán";
+            this.chkFoodPriceLess.UseVisualStyleBackColor = true;
+            // 
+            // chkNameFood
+            // 
+            this.chkNameFood.AutoSize = true;
+            this.chkNameFood.Location = new System.Drawing.Point(3, 6);
+            this.chkNameFood.Name = "chkNameFood";
+            this.chkNameFood.Size = new System.Drawing.Size(69, 17);
+            this.chkNameFood.TabIndex = 7;
+            this.chkNameFood.Text = "Tên Món";
+            this.chkNameFood.UseVisualStyleBackColor = true;
+            // 
+            // chkCategory
+            // 
+            this.chkCategory.AutoSize = true;
+            this.chkCategory.Location = new System.Drawing.Point(3, 29);
+            this.chkCategory.Name = "chkCategory";
+            this.chkCategory.Size = new System.Drawing.Size(76, 17);
+            this.chkCategory.TabIndex = 6;
+            this.chkCategory.Text = "Danh Mục";
+            this.chkCategory.UseVisualStyleBackColor = true;
             // 
             // SearchFood
             // 
@@ -1084,36 +1126,6 @@
             this.dtgvAccount.Size = new System.Drawing.Size(441, 330);
             this.dtgvAccount.TabIndex = 0;
             // 
-            // chkCategory
-            // 
-            this.chkCategory.AutoSize = true;
-            this.chkCategory.Location = new System.Drawing.Point(3, 29);
-            this.chkCategory.Name = "chkCategory";
-            this.chkCategory.Size = new System.Drawing.Size(76, 17);
-            this.chkCategory.TabIndex = 6;
-            this.chkCategory.Text = "Danh Mục";
-            this.chkCategory.UseVisualStyleBackColor = true;
-            // 
-            // chkNameFood
-            // 
-            this.chkNameFood.AutoSize = true;
-            this.chkNameFood.Location = new System.Drawing.Point(5, 7);
-            this.chkNameFood.Name = "chkNameFood";
-            this.chkNameFood.Size = new System.Drawing.Size(69, 17);
-            this.chkNameFood.TabIndex = 7;
-            this.chkNameFood.Text = "Tên Món";
-            this.chkNameFood.UseVisualStyleBackColor = true;
-            // 
-            // chkFoodPrice
-            // 
-            this.chkFoodPrice.AutoSize = true;
-            this.chkFoodPrice.Location = new System.Drawing.Point(96, 7);
-            this.chkFoodPrice.Name = "chkFoodPrice";
-            this.chkFoodPrice.Size = new System.Drawing.Size(64, 17);
-            this.chkFoodPrice.TabIndex = 8;
-            this.chkFoodPrice.Text = "Giá Bán";
-            this.chkFoodPrice.UseVisualStyleBackColor = true;
-            // 
             // fAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1278,6 +1290,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn statusTable;
         private System.Windows.Forms.CheckBox chkNameFood;
         private System.Windows.Forms.CheckBox chkCategory;
-        private System.Windows.Forms.CheckBox chkFoodPrice;
+        private System.Windows.Forms.CheckBox chkFoodPriceLess;
+        private System.Windows.Forms.CheckBox chkFoodPriceBiger;
     }
 }

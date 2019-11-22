@@ -181,7 +181,7 @@ namespace QuanLyCafe
             float price = (float)nmFoodPrice.Value;
             //kiểm tra food đã có hay chưa
             Food lisfood = FoodDAO.Instance.GetFoodByID(id);
-            if (FoodDAO.Instance.GetFoodByCategoryIDandCategory(name, idCategory))
+            if (FoodDAO.Instance.CheckFoodByNameandCategory(name, idCategory))
             {
                 //if(idCategory == (cbFoodCategory.SelectedItem as Category).ID)
                 MessageBox.Show("Tên món đã có trong danh mục "+ idCategory+" vui long đặt tên khác");
@@ -225,6 +225,8 @@ namespace QuanLyCafe
                     //MessageBox.Show("xoa billinfo");
                     BillInfoDAO.Instance.DeleteBillInfoByFoodID(idfood);
                 }
+                else
+                    return;
 
             }
             if(FoodDAO.Instance.DeleteFood(idfood))
@@ -391,32 +393,64 @@ namespace QuanLyCafe
                 if(CategoryDAO.Instance.DeleteCategory(id))
                 {
                     MessageBox.Show(string.Format("Đã xóa Danh Mục ''{0}'' Thành Công", txbCategoryName.Text), "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadListCategory();
                 }
             }
             
         }
 
-       
-
-        
-
         private void SearchFood_Click(object sender, EventArgs e)
         {
+           
+            int idCategory = (cbFoodCategory.SelectedItem as Category).ID;
+            float price = (float)nmFoodPrice.Value;
+            string name = txbFoodName.Text;
+            int search =0;
+            if (chkNameFood.Checked)
+                search += 1;
             if (chkCategory.Checked)
+                search += 3;
+            if (chkFoodPriceLess.Checked)
+                search += 5;
+            if (chkFoodPriceBiger.Checked)
+                search += 7;
+            try
             {
-                int idCategory = (cbFoodCategory.SelectedItem as Category).ID;
-                foodList.DataSource = FoodDAO.Instance.GetFoodByCategoryID(idCategory);
-                
+                switch (search)
+                {
+                    case 1://tim theo name gan đúng
+                        {
+                            foodList.DataSource = SearchFoodByName(name);
+                            break;
+                        }
+                    case 3: //tim theo danh mục
+                        {
+                            foodList.DataSource = FoodDAO.Instance.GetFoodByCategoryID(idCategory);
+                            break;
+                        }
+                    case 5://giá nhỏ hơn
+                        {
+
+                            foodList.DataSource = FoodDAO.Instance.GetFoodPriceLess(price);
+                            break;
+
+                        }
+                    case 7://giá lớn hơn
+                        {
+
+                            foodList.DataSource = FoodDAO.Instance.GetFoodPriceBiger(price);
+                            break;
+                        }
+                    case 4:
+                        {
+                            foodList.DataSource = FoodDAO.Instance.GetFoodByNameAndCategoryID(name, idCategory);
+                            break;
+                        }
+                }
             }
-            else if(chkNameFood.Checked)
-            {
-                foodList.DataSource = SearchFoodByName(txbFoodName.Text);
-            }
-            else if(  )
-            {
-                
-            }
-                
+            catch { }
+
+
         }
     }
 }
