@@ -144,26 +144,40 @@ namespace QuanLyCafe
         }
         private void btnAddFood_Click(object sender, EventArgs e)
         {
+            //try
+            //{
+            //int id=0;
             string name = txbFoodName.Text;
-            int id = Convert.ToInt32(txbFoodID.Text);
+
             int idCategory = (cbFoodCategory.SelectedItem as Category).ID;
             float price = (float)nmFoodPrice.Value;
+            if(foodList.Count <0)
+            {
+                MessageBox.Show("chưa có món nào","Thông báo",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                return;
+            }
             //kiểm tra food đã có hay chưa
-            Food lisfood = FoodDAO.Instance.GetFoodByID(id);
-            if (name == lisfood.Name.ToString())
+            else 
             {
-                MessageBox.Show("Tên món đã có vui long đặt tên khác");
-            }//ket thuc kiểm tra nếu đã có kết thuc
-            else
-            {
+                
+                //id = Convert.ToInt32(txbFoodID.Text);
+                List<Food> checkfood = FoodDAO.Instance.GetFoodByNameAndCategoryID(name,idCategory);
+                foreach(Food item in checkfood)
+                {
+                    if (name == item.Name.ToString())
+                    {
+                        MessageBox.Show("Tên món đã có trong danh mục vui long đặt tên khác");
+                        return;
+                    }//ket thuc kiểm tra nếu đã có kết thuc
+                }
                 if (FoodDAO.Instance.InsertFood(name, idCategory, price))
                 {
                     MessageBox.Show("Thêm món thành công");
                     LoadListFood();
 
-                    if(insertFood != null)
+                    if (insertFood != null)
                     {
-                        insertFood(this,new EventArgs());
+                        insertFood(this, new EventArgs());
                     }
                 }
                 else
@@ -171,23 +185,24 @@ namespace QuanLyCafe
                     MessageBox.Show("Thêm món thất bại");
                 }
             }
+            
+                
+                
+            
+            //}
+            //catch { }
+
         }
 
         private void btnEditFood_Click(object sender, EventArgs e)
         {
-            string name = txbFoodName.Text;
-            int id = Convert.ToInt32(txbFoodID.Text);
-            int idCategory = (cbFoodCategory.SelectedItem as Category).ID;
-            float price = (float)nmFoodPrice.Value;
-            //kiểm tra food đã có hay chưa
-            Food lisfood = FoodDAO.Instance.GetFoodByID(id);
-            if (FoodDAO.Instance.CheckFoodByNameandCategory(name, idCategory))
+            try
             {
-                //if(idCategory == (cbFoodCategory.SelectedItem as Category).ID)
-                MessageBox.Show("Tên món đã có trong danh mục "+ idCategory+" vui long đặt tên khác");
-            }//ket thuc kiểm tra nếu đã có kết thuc
-            else
-            {
+                string name = txbFoodName.Text;
+                int id = Convert.ToInt32(txbFoodID.Text);
+                int idCategory = (cbFoodCategory.SelectedItem as Category).ID;
+                float price = (float)nmFoodPrice.Value;
+
                 if (FoodDAO.Instance.UpdatFood(id, name, idCategory, price))
                 {
                     MessageBox.Show("Cập nhật món thành công");
@@ -196,8 +211,8 @@ namespace QuanLyCafe
                         LoadSearchFoodByCategory(idCategory);
                     }
                     else
-                    { 
-                        LoadListFood(); 
+                    {
+                        LoadListFood();
                     }
                     //event
                     if (updateFood != null)
@@ -209,41 +224,56 @@ namespace QuanLyCafe
                 {
                     MessageBox.Show("Sữa món thất bại");
                 }
+
             }
+            catch { }
             
         }
         private void btnDeleteFood_Click(object sender, EventArgs e)
         {
-            int idfood = Convert.ToInt32(txbFoodID.Text);
-            string FoodName = txbFoodName.Text.ToString();
-            int checkFoodInBillInfo = (int)DataProvider.Instance.ExecuteScalar("SELECT COUNT(*) FROM dbo.BillInfo WHERE idFood =" + idfood);
-            if (checkFoodInBillInfo > 0)//nếu có thong tin Food trong BillInfo thi xoa BillInfo trước xong xoa Food
-            {
-                DialogResult result = MessageBox.Show(String.Format("Nếu bạn xóa món ''{0}'' thì sẻ xóa luôn tất cả các Bill liên quan tới Món ''{0}''", FoodName), "Thông Báo", MessageBoxButtons.OKCancel);
-                if (result == DialogResult.OK)
-                {
-                    //MessageBox.Show("xoa billinfo");
-                    BillInfoDAO.Instance.DeleteBillInfoByFoodID(idfood);
-                }
-                else
-                    return;
+            DialogResult resultDeleteFood = MessageBox.Show("Bạn thật sự muốn xóa Món này","Thông Báo",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
 
-            }
-            if(FoodDAO.Instance.DeleteFood(idfood))
+            if (resultDeleteFood == DialogResult.Yes)
             {
-                MessageBox.Show(String.Format("Đã xoa món ''{0}'' thành công", FoodName));
-                LoadListFood();
-                //goi event
-                if(deleteFood != null)
+                try
                 {
-                    deleteFood(this, new EventArgs());
+                    int idfood = Convert.ToInt32(txbFoodID.Text);
+                    string FoodName = txbFoodName.Text.ToString();
+                    int checkFoodInBillInfo = (int)DataProvider.Instance.ExecuteScalar("SELECT COUNT(*) FROM dbo.BillInfo WHERE idFood =" + idfood);
+                    if (checkFoodInBillInfo > 0)//nếu có thong tin Food trong BillInfo thi xoa BillInfo trước xong xoa Food
+                    {
+                        DialogResult result = MessageBox.Show(String.Format("Nếu bạn xóa món ''{0}'' thì sẻ xóa luôn tất cả các Bill liên quan tới Món ''{0}''", FoodName), "Thông Báo", MessageBoxButtons.OKCancel);
+                        if (result == DialogResult.OK)
+                        {
+                            //MessageBox.Show("xoa billinfo");
+                            BillInfoDAO.Instance.DeleteBillInfoByFoodID(idfood);
+                        }
+                        else
+                            return;
+
+                    }
+                    if (FoodDAO.Instance.DeleteFood(idfood))
+                    {
+                        MessageBox.Show(String.Format("Đã xoa món ''{0}'' thành công", FoodName));
+                        LoadListFood();
+                        //goi event
+                        if (deleteFood != null)
+                        {
+                            deleteFood(this, new EventArgs());
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show(String.Format("Xoa món ''{0}'' Thất Bại", FoodName));
+                    }
+
                 }
+                catch { }
+
             }
             else
-            {
-                MessageBox.Show(String.Format("Xoa món ''{0}'' Thất Bại", FoodName));
-            }
-
+                return;
+            
         }
 
         private event EventHandler insertFood;
@@ -272,22 +302,32 @@ namespace QuanLyCafe
         }
         private void btnEditCategory_Click(object sender, EventArgs e)
         {
-            string name = txbCategoryName.Text;
-            int id = Convert.ToInt32(txbCategoryID.Text);
-            if(CategoryDAO.Instance.UpdateCategory(id,name))
+            if(CategoryList.Count>0)
             {
-                
-                MessageBox.Show("Cập nhật Danh mục Thành Công");
-                LoadListCategory();
+                string name = txbCategoryName.Text;
+                int id = Convert.ToInt32(txbCategoryID.Text);
+                if (CategoryDAO.Instance.UpdateCategory(id, name))
+                {
+
+                    MessageBox.Show("Cập nhật Danh mục Thành Công");
+                    LoadListCategory();
+                }
+                else
+                {
+                    MessageBox.Show("Cập nhật Category thất bại");
+                }
             }
             else
-            {
-                MessageBox.Show("Cập nhật Category thất bại");
-            }
+                MessageBox.Show("Không có dữ liệu");
         }
         private void btnAddCategory_Click(object sender, EventArgs e)
         {
             string name = txbCategoryName.Text;
+            if(name == "")
+            {
+                MessageBox.Show("Tên danh mục không được để trống","Thông báo",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                return;
+            }
             //int id = Convert.ToInt32(txbCategoryID.Text);
             int CheckCategoryName = (int)DataProvider.Instance.ExecuteScalar("SELECT COUNT(*) FROM dbo.FoodCategory WHERE name =N'"+name+"'");
             if(CheckCategoryName >0)
@@ -322,26 +362,30 @@ namespace QuanLyCafe
 
         private void btnTableAdd_Click(object sender, EventArgs e)
         {
-            int id = Convert.ToInt32(txbTableID.Text);
+            int id;
             string name = txbTableName.Text;
             string status = cbTableStatus.SelectedItem.ToString();
-            //kiểm trả tên bàn trùng lập hay không
-            Table checkTableName = TableDAO.Instance.GetTableByID(id);
-            if(name == checkTableName.Name)
+            if (txbTableID.Text != "")
+            { 
+                 id = Convert.ToInt32(txbTableID.Text);
+                //kiểm trả tên bàn trùng lập hay không
+                Table checkTableName = TableDAO.Instance.GetTableByID(id);
+                if (name == checkTableName.Name)
+                {
+                    MessageBox.Show(string.Format("Tên bàn thêm mới ''{0}'' trung với tên bàn củ ''{1}''", name, checkTableName.Name));
+                    return;
+                }
+            }
+
+            //Thêm bàn mới
+            if (TableDAO.Instance.InsertTable(name, status))
             {
-                MessageBox.Show(string.Format("Tên bàn thêm mới ''{0}'' trung với tên bàn củ ''{1}''",name,checkTableName.Name));
+                MessageBox.Show(string.Format("Thêm bàn ''{0}'' thành công", name), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadListTable();
             }
             else
-            {
-                //Thêm bàn mới
-                if (TableDAO.Instance.InsertTable(name, status))
-                {
-                    MessageBox.Show(string.Format("Thêm bàn ''{0}'' thành công", name),"Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadListTable();
-                }
-                else
-                    MessageBox.Show(string.Format("Không thể Thêm bàn ''{0}''",name),"Thông báo", MessageBoxButtons.OK,MessageBoxIcon.Warning);
-            }
+                MessageBox.Show(string.Format("Không thể Thêm bàn ''{0}''", name), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
 
 
         }
@@ -377,32 +421,37 @@ namespace QuanLyCafe
         {
             //kiem tra co food nào thuoc category ko nếu có phải chuyển qua category hoặc xóa hết tất cả food đó mới xoa được
             //kiêm tra food có tồn tại trong category không
-            int id = Convert.ToInt32(txbCategoryID.Text);
-            string query = string.Format("SELECT COUNT(*) FROM dbo.Food WHERE idCategory ={0}", id);
-            int checkFood = (int)DataProvider.Instance.ExecuteScalar(query);
-            if (checkFood >0)
+            if(CategoryList.Count>0)
             {
-                MessageBox.Show(string.Format("Có tồn tại Món  trong danh muc ''{0}'' bằng cách kìm kiếm theo danh mục", txbCategoryName.Text),"Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                tcAdmin.SelectedTab = tbFood;
-                //chkCategory.Checked = true;
-                LoadSearchFoodByCategory(id);
-                
-            }
-            else 
-            {
-                if(CategoryDAO.Instance.DeleteCategory(id))
+                int id = Convert.ToInt32(txbCategoryID.Text);
+                string query = string.Format("SELECT COUNT(*) FROM dbo.Food WHERE idCategory ={0}", id);
+                int checkFood = (int)DataProvider.Instance.ExecuteScalar(query);
+                if (checkFood > 0)
                 {
-                    MessageBox.Show(string.Format("Đã xóa Danh Mục ''{0}'' Thành Công", txbCategoryName.Text), "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadListCategory();
+                    MessageBox.Show(string.Format("Có tồn tại Món  trong danh muc ''{0}'' bằng cách kìm kiếm theo danh mục và xóa hay chuyển sang danh muc khác mới xóa được", txbCategoryName.Text), "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    tcAdmin.SelectedTab = tbFood;
+                    //chkCategory.Checked = true;
+                    LoadSearchFoodByCategory(id);
+
+                }
+                else
+                {
+                    if (CategoryDAO.Instance.DeleteCategory(id))
+                    {
+                        MessageBox.Show(string.Format("Đã xóa Danh Mục ''{0}'' Thành Công", txbCategoryName.Text), "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadListCategory();
+                    }
                 }
             }
-            
+            else
+                MessageBox.Show("Không có dữ liệu", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
         }
 
         private void SearchFood_Click(object sender, EventArgs e)
         {
            
-            int idCategory = (cbFoodCategory.SelectedItem as Category).ID;
+            
             float price = (float)nmFoodPrice.Value;
             string name = txbFoodName.Text;
             int search =0;
@@ -416,6 +465,7 @@ namespace QuanLyCafe
                 search += 7;
             try
             {
+                int idCategory = (cbFoodCategory.SelectedItem as Category).ID;
                 switch (search)
                 {
                     case 1://tim theo name gan đúng

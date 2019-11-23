@@ -394,6 +394,7 @@
             // 
             // cbFoodCategory
             // 
+            this.cbFoodCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbFoodCategory.FormattingEnabled = true;
             this.cbFoodCategory.Location = new System.Drawing.Point(84, 2);
             this.cbFoodCategory.Name = "cbFoodCategory";
